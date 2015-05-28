@@ -50,8 +50,8 @@ class MainPage(webapp2.RequestHandler):
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         links_query = Link.query(
-            ancestor=guestbook_key(guestbook_name)).order(Link.date)
-        links = links_query.fetch(10)
+            ancestor=guestbook_key(guestbook_name)).order(-Link.date)
+        links = links_query.fetch(15)
 
 
         template_values = {

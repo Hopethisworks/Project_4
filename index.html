@@ -706,6 +706,75 @@
   </div>
 </div>
 <div class="lesson">
+  <h2>Web Application Development</h2>
+  <div class="concept">
+  <p>
+  The browser makes a request via the internet to the servers generally using Hyper Text Transfer Protocol. After the connection to the host is made, the HTTP request line includes the method of server request (commonly GET (default method) to obtain a document from the server, or POST to send information to the server,) the path (document requested from server,) and HTTP version.  The request lines include many headers. The server responds with files or response that the browser requested.  The servers are optimized for hosting files that make up the web.  Query parameters (AKA GET parameters) add an additional parameter in the URL, separated by a ? for the first parameter and & for additional parameters.  This provide additional information to the server.  Fragments (indicated by a leading #) are not sent to the server.  
+  </p>  
+    <table style="width:100%">
+      <tr>
+        <th><b>GET</b></th>
+        <th><b>POST</b></th>
+      </tr>
+      <tr>
+        <td>Parameters in url</td>
+        <td>Parameters in body</td>
+      </tr>
+      <tr>
+        <td>Used for fetching documents</td>
+        <td>Used for updating data</td>
+      </tr>
+      <tr>
+        <td>Maximum URL length</td>
+        <td>No theoretical max length (but can be configured)</td>
+      </tr>
+            <tr>
+        <td>Okay to cache</td>
+        <td>Standard not to cache</td>
+      </tr>
+            <tr>
+        <td>Shouldn't change the server</td>
+        <td>Generally used to update the server</td>
+      </tr>
+    </table>
+    <br>
+    <p> The server responds to the HTTP request line with a status line, that includes the HTTP version and a status code with the status reason phrase. The status line is also followed by headers, similar to the client request line. <br>
+      Servers will provide a static or dynamic response to the requests.  The static response is a pre-written file like an image.  The dynamic response is created as a response to the client request by a running web application, a program to generate content that the browser requested.<br>
+      RESPONSE - represents the response that the server will send back to the client <br>
+      REQUEST - represents the request that came from the browser, you can call get on it to get different parameters<br>
+      Validating on the server side that we received what we expected to receive to make sure your server can handle broken data submitted by a browser. &nbsp;This is particularly a problem if the browser sends HTML (it must be escaped and returned as text,) inappropriate data, or malicious entries.<br>
+      Since users have a preference for different browsers, it is necessary to validate the input from all browser types since they behave differently.  It is best to use validation on the server in case the user may be using a browser that you are not familiar with and may not have tested. </p>
+  </div>
+</div>  
+<div class="lesson">
+  <h2>Templates</h2>
+  <div class="concept">
+  <p>
+A template library is a library to build complicated strings. This can be any string but when developing web applications it is primarily referring to HTML strings.
+<br>
+<a href="http://Jinja.pocoo.org">Jinja2</a> is a template library application that is built into the Google webapp2.  To use it, add your library reference to the app.yaml file: <br>
+Import jinja2 into your python file.
+
+<h3>Benefits:</h3>
+    <ul class="square">
+      <li> Separate different types of code (HTML and python in this case)</li>
+      <li> Make more readable code</li>
+      <li> More secure websites</li>
+      <li> HTML that is easier to modify</li>
+      <li> This significantly contributes to reduced repetition and also makes all of your similar elements look and behave the same</li>
+  </ul>
+<h3>Rules:</h3>
+    <ul class="square">
+      <li> Always automatically escape HTML when possible in templates to avoid errors</li>
+      <li> Minimize code in templates - use statements and for loops, and that is just about it</li>
+      <li> Minimize HTML in python code</li>
+  </ul>
+<h3>Template Inheritance</h3>
+Can use the same title, footer on each page from one template, sub-templates that define content in the middle
+  </p>
+  </div>
+</div> 
+<div class="lesson">
   <h2>Helpful Links</h2>
   <div class="concept"> {% for link in links %}
     <blockquote><a href="{{ link.linkurl }}">{{ link.name }}</a></blockquote>

@@ -38,11 +38,8 @@ h2 {
     border-radius: 4px;
     color: black;
 }
-/*
-* {
-   outline: 1px solid red !important;
-}
-*/
+
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -91,15 +88,8 @@ td {
     border-collapse: collapse;
 }
 /*this is the code from Fresh Tomatoes to make my video link work */
-/*div.video {
-    padding-top: 80px;
-}*/
 
-/*#trailer .modal-dialog {
-    margin-top: 200px;
-    width: 640px;
-    height: 480px;
-}*/
+
 .hanging-close {
     position: absolute;
     top: -12px;
