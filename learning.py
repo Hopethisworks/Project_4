@@ -2,7 +2,6 @@ import cgi
 import os
 import urllib
 
-from google.appengine.api import users
 from google.appengine.ext import ndb
 
 import jinja2
@@ -17,14 +16,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 #The Jinja template allows for creation of HTML code without having to repeat HTML
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
-
-# The Google App Engine Datastore holds data objects known as entities. 
-# An entity has one or more properties, named values of one of several supported 
-# data types: string, integer, or a reference to another entity. 
-# Each entity is identified by its kind, which categorizes the entity for the 
-# purpose of queries, and a key that uniquely identifies it within its kind. 
-# By definition, a transaction cannot succeed unless every one of its operations succeeds; 
-# if any of the operations fails, the transaction is automatically rolled back. 
 # I set a parent key on the 'Links' to ensure that they are all
 # in the same entity group. The data type is a string, and 'Links'
 # is my only entity group.
