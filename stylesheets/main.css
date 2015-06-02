@@ -31,6 +31,12 @@ h2 {
 	font-size:22px;
 }
 
+.error {
+    font-weight:bolder;
+    text-align:center;
+    font-size:28px;
+    color: red;
+}
 .concept {
     background-color: #DFEAF1;
     padding: 4px;

@@ -1,4 +1,4 @@
-import cgi 
+import cgi # TODO: This is never used. Why are we importing this?
 import os
 import urllib
 
@@ -35,11 +35,8 @@ class Link(ndb.Model):
 # return the links that have been stored in the Link datastore.
 
 class MainPage(webapp2.RequestHandler):
-    # def get_form(self, error=""):
-    #     self.response.write(template.render(**template_values))
 
-
-    def get(self, error=""):
+    def get(self):
         # The "get" is to 'pull' information from the datastore
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
@@ -47,19 +44,20 @@ class MainPage(webapp2.RequestHandler):
             ancestor=guestbook_key(guestbook_name)).order(-Link.date)
         links = links_query.fetch(15)
 
+        error = self.request.get('error',"")
 
         template_values = {
             'links': links,
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'error': error,
         }
-       
+
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(**template_values))
 
 
 class Guestbook(webapp2.RequestHandler):
-    def post(self, error=""):
+    def post(self):
         # The "post" is to store the information in the datastore
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
@@ -69,13 +67,17 @@ class Guestbook(webapp2.RequestHandler):
         user_url = self.request.get('linkurl')
 
         if len(user_name) < 5 or len(user_url) < 8:
-            self.response.out.write("Please enter a longer description and a valid URL")
+            error = "Please enter a site description and a valid URL."
+
         else:
-            link.name = self.request.get('name')
-            link.linkurl = self.request.get('linkurl')
+            link.name = user_name
+            link.linkurl = user_url
             link.put()
 
-        query_params = {'guestbook_name': guestbook_name}
+        # TODO: Recommend to indent these two commands inside the else statement above so we can
+        # write the error out appropriately
+        query_params = {'guestbook_name': guestbook_name,
+                        'error': error}
         self.redirect('/?' + urllib.urlencode(query_params))
 
 app = webapp2.WSGIApplication([

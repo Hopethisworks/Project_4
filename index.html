@@ -796,8 +796,10 @@ Can use the same title, footer on each page from one template, sub-templates tha
       </label>
       <!-- the attribute "required" is boolean and keeps users from submitting blank forms -->
       <!-- the input type "url" is HTML5 that can be automatically validated when submitted -->
+      <div class="error"> {{ error }} </div>
       <div>
         <input type="submit" value="Enter Link">
+         <a name="bottom"></a>
       </div>
     </form>
   </div>
