@@ -23,16 +23,6 @@ DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
 def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
     return ndb.Key('Guestbook', guestbook_name)
 
-# It is not likely that a valid site name is less than 5 characters, so I'm inserting a check to verify that the user input at least 5 characters
-def valid_name(name):
-    if len(name) > 5:
-        return name
-
-# It is not likely that a valid url is less than 8 characters, so I'm inserting a check to verify that the user input at least 8 characters 
-def valid_url(linkurl):
-    if len(linkurl) > 8:
-        return linkurl
-
     #creating an object class, Link, to store each website link entry
 
 class Link(ndb.Model):
@@ -45,7 +35,11 @@ class Link(ndb.Model):
 # return the links that have been stored in the Link datastore.
 
 class MainPage(webapp2.RequestHandler):
-    def get(self):
+    # def get_form(self, error=""):
+    #     self.response.write(template.render(**template_values))
+
+
+    def get(self, error=""):
         # The "get" is to 'pull' information from the datastore
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
@@ -57,28 +51,50 @@ class MainPage(webapp2.RequestHandler):
         template_values = {
             'links': links,
             'guestbook_name': urllib.quote_plus(guestbook_name),
+            'error': error,
         }
        
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(**template_values))
+        # tried to put substitution here, caused page not to load in web app
+        # self.response.write(template.render(**template_values), % {"error": error})
+        # self.response.write(template.render(**template_values) % {"error": error})
 
 
 class Guestbook(webapp2.RequestHandler):
-    def post(self):
+    def post(self, error=""):
         # The "post" is to store the information in the datastore
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         link = Link(parent=guestbook_key(guestbook_name))
 
-        user_name = valid_name(self.request.get('name'))
-        user_url = valid_url(self.request.get('linkurl'))
+# This is my experiment using the defined valid name and url from the top
+        # user_name = valid_name(self.request.get('name'))
+        # user_url = valid_url(self.request.get('linkurl'))
 
-        if not (user_name and user_url):
-            self.response.out(template)
+# This is my experiment with self-contained validation
+        user_name = self.request.get('name')
+        user_url = self.request.get('linkurl')
+
+        if len(user_name) < 5 or len(user_url) < 8:
+            self.response.out.write("Please enter a longer description and a valid URL")
         else:
-            link.name = self.request.get('user_name')
-            link.linkurl = self.request.get('user_url')
+            link.name = self.request.get('name')
+            link.linkurl = self.request.get('linkurl')
             link.put()
+
+        # if len('name') < 5 or len('linkurl') < 8:
+        #     print self.response.out.write("Please enter a longer link description and a valid URL")
+        #    # self.response.out(template)
+        # else:
+        #     link.name = self.request.get('name')
+        #     link.linkurl = self.request.get('linkurl')
+        #     link.put()
+       
+# This is the code that works properly but without validation      
+        # link.name = self.request.get('name')
+        # link.linkurl = self.request.get('linkurl')
+        # link.put()
 
         query_params = {'guestbook_name': guestbook_name}
         self.redirect('/?' + urllib.urlencode(query_params))

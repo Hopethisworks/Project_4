@@ -35,20 +35,8 @@ class Link(ndb.Model):
 # return the links that have been stored in the Link datastore.
 
 class MainPage(webapp2.RequestHandler):
-    def get_form(self, error=""):
-        self.response.write(template.render(**template_values))
-
-            template_values = {
-            'links': links,
-            'guestbook_name': urllib.quote_plus(guestbook_name),
-            'error': error,
-        }
-       
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render(**template_values))
-        # tried to put substitution here, caused page not to load in web app
-        # self.response.write(template.render(**template_values), % {"error": error})
-        # self.response.write(template.render(**template_values) % {"error": error})
+    # def get_form(self, error=""):
+    #     self.response.write(template.render(**template_values))
 
 
     def get(self, error=""):
@@ -60,6 +48,17 @@ class MainPage(webapp2.RequestHandler):
         links = links_query.fetch(15)
 
 
+        template_values = {
+            'links': links,
+            'guestbook_name': urllib.quote_plus(guestbook_name),
+            'error': error,
+        }
+       
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(**template_values))
+
+
+class Guestbook(webapp2.RequestHandler):
     def post(self, error=""):
         # The "post" is to store the information in the datastore
         guestbook_name = self.request.get('guestbook_name',
@@ -81,4 +80,5 @@ class MainPage(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
+    ('/sign', Guestbook),
 ], debug=True)
