@@ -1,4 +1,3 @@
-import cgi # TODO: This is never used. Why are we importing this?
 import os
 import urllib
 
@@ -69,16 +68,19 @@ class Guestbook(webapp2.RequestHandler):
         if len(user_name) < 5 or len(user_url) < 8:
             error = "Please enter a site description and a valid URL."
 
+            query_params = {'guestbook_name': guestbook_name,
+                            'error': error}
+            self.redirect('/?' + urllib.urlencode(query_params))
+
         else:
             link.name = user_name
             link.linkurl = user_url
+            error = "Thanks!"
             link.put()
 
-        # TODO: Recommend to indent these two commands inside the else statement above so we can
-        # write the error out appropriately
-        query_params = {'guestbook_name': guestbook_name,
-                        'error': error}
-        self.redirect('/?' + urllib.urlencode(query_params))
+            query_params = {'guestbook_name': guestbook_name,
+                            'error': error}
+            self.redirect('/?' + urllib.urlencode(query_params))
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
