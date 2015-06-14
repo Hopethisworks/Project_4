@@ -41,7 +41,8 @@ class MainPage(webapp2.RequestHandler):
                                           DEFAULT_GUESTBOOK_NAME)
         links_query = Link.query(
             ancestor=guestbook_key(guestbook_name)).order(-Link.date)
-        links = links_query.fetch(15)
+        max_links = 10
+        links = links_query.fetch(max_links)
 
         error = self.request.get('error',"")
 
@@ -64,13 +65,17 @@ class Guestbook(webapp2.RequestHandler):
 
         user_name = self.request.get('name')
         user_url = self.request.get('linkurl')
+        min_name = 5
+        # the name of the link must be at least 5 characters
+        min_url = 8
+        # the ulr must be at least 8 characters
 
-        if len(user_name) < 5 or len(user_url) < 8:
+        if len(user_name) < min_name or len(user_url) < min_url:
             error = "Please enter a site description and a valid URL."
 
             query_params = {'guestbook_name': guestbook_name,
                             'error': error}
-            self.redirect('/?' + urllib.urlencode(query_params))
+            self.redirect('/?' + urllib.urlencode(query_params) + '#bottom')
 
         else:
             link.name = user_name
@@ -80,7 +85,7 @@ class Guestbook(webapp2.RequestHandler):
 
             query_params = {'guestbook_name': guestbook_name,
                             'error': error}
-            self.redirect('/?' + urllib.urlencode(query_params))
+            self.redirect('/?' + urllib.urlencode(query_params) + '#bottom')
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
